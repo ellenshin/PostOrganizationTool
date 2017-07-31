@@ -11,13 +11,9 @@ app = Flask(__name__)
 
 @app.route('/')
 def view_hello():
-    return 'Hello World!'
+    return render_template('base.html', result_list=[])
 
 """
-@app.route('/demo-1/')
-def view_demo_1():
-    return render_template('demo-1.html', name='Justin')
-
 @app.route('/demo-2/<name>/')
 def view_demo_2(name):
     return render_template('demo-1.html', name=name)
@@ -30,7 +26,7 @@ def view_demo_3():
 
 subcategories = []
 categories = []
-post_types = [[][][][]]     #[0] = 'image,[1] = 'text',[2] = 'video', [3] = 'fb link',[4] = 'audio'
+#post_types = [[][][][]]     #[0] = 'image,[1] = 'text',[2] = 'video', [3] = 'fb link',[4] = 'audio'
 platforms = []
 temppost = []
 
@@ -198,6 +194,10 @@ def get_data():
 
     return listofObj
 
+@app.route('/')
+def view_root():
+    ans_list_by_cat = []
+    return render_template('base.html', result_list=ans_list_by_cat)
 
 @app.route('/directory/')
 def view_directory():
@@ -214,6 +214,5 @@ def view_css(file):
     return send_from_directory('css', file)
 
 if __name__ == '__main__':
-    #chdir(dirname(__file__))
-    get_data()
-    #app.run(debug=True)
+    #chdir(dirname(realpath(__file__)))
+    app.run(debug=True)
