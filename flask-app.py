@@ -1,5 +1,7 @@
 from os import chdir
 from os.path import dirname
+import csv
+
 
 from flask import Flask, render_template, send_from_directory
 
@@ -9,7 +11,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def view_hello():
-    return 'Hello StoryBlaster!'
+    return 'Hello World!'
 
 """
 @app.route('/demo-1/')
@@ -26,10 +28,17 @@ def view_demo_3():
     return render_template('demo-3.html', salutation='Roll call', names=names)
 """
 
+subcategories = []
+categories = []
+post_types = [[][][][]]     #[0] = 'image,[1] = 'text',[2] = 'video', [3] = 'fb link',[4] = 'audio'
+platforms = []
+temppost = []
+
+
 class Content():
 
     def __init__(self, list):
-        initial_dict = {'platform': list[8], 'message': list[9], 'postID': list[0]}
+        self._initial_dict = {'platform': list[8], 'message': list[9], 'postID': list[0]}
         self._post_id = list[0]
         self._handle = list[1]
         self._postDate = list[2]
@@ -61,14 +70,30 @@ class Content():
         self._prediction = list[28]
         self._sell_relevant = list[29]
         self._listofdict = []
-        self._listofdict.append(initial_dict)
+        self._listofdict.append(self._initial_dict)
 
     def addPost(self, platform, message, post_id):
         tempdict = {'platform': platform, 'message': message, 'postID': post_id}
         self._listofdict.append(tempdict)
         return self._listofdict
 
+def appenditem(obj):
 
+    global post_types
+    if obj._get_postType == 'image':
+        post_types[0].append(obj)
+
+    elif obj._get_postType =='text':
+        post_types[1].append(obj)
+
+    elif obj._get_postType == 'video':
+        post_types[2].append(obj)
+
+    elif obj._get_postType == 'fb link':
+        post_types[3].append(obj)
+
+    elif obj._get_postType == 'audio':
+        post_types[4].append(obj)
 
 
 def get_data():
@@ -76,12 +101,13 @@ def get_data():
     listofcid = []
     prev_obj = None
 
-    with open('Large_Data_Set_Posts11.txt', errors='ignore') as file:
-        contents = [row for row in file]
+    with open('Large_Data_Set_Posts11.csv', errors='ignore') as csvfile:
+        reader = csv.reader(csvfile)
+        contents = [row for row in reader]
 
     for row in contents[1:]:
         temp = []
-        cells = row.split("\t")
+        cells = row
         post_id = cells[1]
         handle = cells[2]
         postDate = cells[3]
@@ -112,8 +138,6 @@ def get_data():
         succeeded = cells[28]
         prediction = cells[29]
         sell_relevant = cells[30]
-
-
 
         temp.append(post_id)
         temp.append(handle)
@@ -146,24 +170,33 @@ def get_data():
         temp.append(prediction)
         temp.append(sell_relevant)
 
+        global temppost
+
+        if gen_postType not in temppost:
+            temppost.append(gen_postType)
+
+        global subcatagories
+
+        if sub_category not in subcategories:
+            subcategories.append(sub_category)
+
         if prev_obj == None:
             obj = Content(temp)
             prev_obj = obj
             listofcid.append(campaignId)
+            listofObj.append(obj)
         elif prev_obj._campaignID == campaignId:
             prev_obj.addPost(platform, message, post_id)
         else:
-            listofObj.append(prev_obj)
             obj = Content(temp)
             listofcid.append(campaignId)
             prev_obj = obj
+            listofObj.append(prev_obj)
+    print(temppost)
     listofObj.append(prev_obj)
-    print(len(listofcid))
+    print(len(listofObj))
+
     return listofObj
-
-
-
-
 
 
 @app.route('/directory/')
@@ -181,8 +214,6 @@ def view_css(file):
     return send_from_directory('css', file)
 
 if __name__ == '__main__':
-    chdir(dirname(__file__))
-    #get_data()
+    #chdir(dirname(__file__))
+    get_data()
     #app.run(debug=True)
-    #test
-
