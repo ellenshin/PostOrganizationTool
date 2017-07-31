@@ -74,6 +74,9 @@
             <div id="CourseChart">
                 <table class="table">
                     <tr>
+                        <th>
+                        Post ID
+                    </th>
                     <th>
                         Image
                     </th>
@@ -81,13 +84,7 @@
                         Source
                     </th>
                     <th>
-                        Handle
-                    </th>
-                    <th>
                         Type
-                    </th>
-                    <th>
-                        Date
                     </th>
                     <th>
                         Message
@@ -101,33 +98,33 @@
                     <th>
                         Comments
                     </th>
+                        <th>
+                        Succeeded
+                    </th>
                     <th>
                         URL
                     </th>
                 </tr>
                         {% for post in result_list %}
                         <tr>
-                            <td><a href="/base/{{ post.id }}"> {{ post.id }}</a></td>
+                            <td><a href="/{{ post._post_id }}"> {{ post._post_id }}</a></td>
                             <td>
                                 <img src="http://www.worldkidneyday.org/wp-content/uploads/2014/09/placeholder_original-140x140.png" width="140">
                             </td>
-                            <td>{{ post.source }}</td>
-                            <td>{{ post.handle }}</td>
-                            <td>{{ post.type }}</td>
-                            <td>{{ post.date }}</td>
-                            <td>{{ post.text }}</td>
-                            <td>{{ post.likes }}</td>
-                            <td>{{ post.shares }}</td>
-                            <td>{{ post.comments }}</td>
-                            <td>{{ post.success }}</td>
-                            <td><a href="{{ post.url }}">
-                                <img src="http://www.freeiconspng.com/uploads/links-icon-12.png" width="30">
-                            </a></td>
+                            <td>{{ post._platform }}</td>
+                            <td>{{ post._postType }}</td>
+                            <td>{{ post._message }}</td>
+                            <td>{{ post._likes }}</td>
+                            <td>{{ post._shares }}</td>
+                            <td>{{ post._comments }}</td>
+                            <td>{{ post._succeeded }}</td>
+                            <td><a class="btn btn-sm btn-default" href="{{ post._postURL }}">link</a>
+                            </td>
                         </tr>
                         {% endfor %}
                 </table>
             </div>
         </div>
-        </div>
-    </body>
+    </div>
+</body>
 </html>

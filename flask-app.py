@@ -11,7 +11,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def view_hello():
-    return render_template('base.html', result_list=[])
+    list = get_data()[0:10]
+    return render_template('base.html', result_list=list)
 
 """
 @app.route('/demo-2/<name>/')
