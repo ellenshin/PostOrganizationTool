@@ -9,11 +9,6 @@ app = Flask(__name__)
 
 # DEMO STUFF
 
-@app.route('/')
-def view_hello():
-    list = get_data()[0:10]
-    return render_template('base.html', result_list=list)
-
 """
 @app.route('/demo-2/<name>/')
 def view_demo_2(name):
@@ -106,6 +101,7 @@ def get_data():
         temp = []
         cells = row
         post_id = cells[1]
+        print(post_id)
         handle = cells[2]
         postDate = cells[3]
         postType = cells[4]
@@ -194,6 +190,11 @@ def get_data():
     print(len(listofObj))
 
     return listofObj
+
+@app.route('/')
+def view_hello():
+    list = get_data()[0:10]
+    return render_template('base.html', result_list=list)
 
 @app.route('/directory/')
 def view_directory():
