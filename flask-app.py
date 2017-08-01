@@ -1,5 +1,5 @@
 from os import chdir
-from os.path import dirname
+from os.path import dirname, realpath
 import csv
 
 
@@ -208,8 +208,6 @@ def view_post(id):
     for post in searched_list:
         if post._post_id == id:
             return render_template('post.html', post=post)
-        else:
-            return render_template('base.html', result_list=list)
 
 # DON'T TOUCH THE CODE BELOW THIS LINE
 
@@ -218,5 +216,5 @@ def view_css(file):
     return send_from_directory('css', file)
 
 if __name__ == '__main__':
-    #chdir(dirname(realpath(__file__)))
+    chdir(dirname(realpath(__file__)))
     app.run(debug=True)
