@@ -7,6 +7,9 @@ from flask import Flask, render_template, send_from_directory
 
 app = Flask(__name__)
 
+post_list = []
+
+
 # DEMO STUFF
 
 """
@@ -193,16 +196,16 @@ def get_data():
 
 @app.route('/')
 def view_hello():
-    list = get_data()[0:10]
+    global post_list
+    post_list = get_data()
+    list = post_list[0:10]
     return render_template('base.html', result_list=list)
 
-@app.route('/directory/')
-def view_directory():
-    return 'FIXME'
-
-@app.route('/directory/<username>/')
-def view_student(username):
-    return 'FIXME'
+@app.route('/<id>')
+def view_post(id):
+    for post in post_list:
+        if post._post_id == id:
+            return render_template('post.html', post=post)
 
 # DON'T TOUCH THE CODE BELOW THIS LINE
 

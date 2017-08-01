@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post details</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/main.js"></script>
+</head>
+<body>
+    <div class ="container">
+        <h2>Post Details</h2>
+        <hr class="style3">
+        <div class = "row">
+                <div class="col-lg-5">
+                    <img class="img-center center-block" src="http://www.worldkidneyday.org/wp-content/uploads/2014/09/placeholder_original-140x140.png" width="300">
+                    <br>
+                    {{ post._message }}
+                    <br>
+                    <br>
+                    <div class = "row">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-8" style="text-align: left">
+                            <div class="col-lg-4" style="text-align: center"><i class="fa fa-heart fa-lg" aria-hidden="true"> {{ post._likes }}</i></div>
+                            <div class="col-lg-4" style="text-align: center"><i class="fa fa fa-share fa-lg" aria-hidden="true"> {{ post._shares }}</i></div>
+                            <div class="col-lg-4" style="text-align: center"><i class="fa fa-comment fa-lg" aria-hidden="true"> {{ post._comments }}</i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <table class="table table-user-information">
+                        <tbody>
+                        <tr>
+                            <td>Post ID:</td>
+                            <td>{{ post._post_id }}</td>
+                        </tr>
+                        <tr>
+                            <td>Platform:</td>
+                            <td>{{ post._platform }}</td>
+                        </tr>
+                        <tr>
+                            <td>Handle:</td>
+                            <td>{{ post._handle }}</td>
+                        </tr>
+                        <tr>
+                            <td>Post Date:</td>
+                            <td>{{ post._postDate }}</td>
+                        </tr>
+                        <tr>
+                            <td>Post Type:</td>
+                            <td>{{ post._postType }}</td>
+                        </tr>
+                        <tr>
+                            <td>Post URL:</td>
+                            <td><a href="{{ post._postUrl }}">{{ post._postUrl }}</a></td>
+                        </tr>
+                        <tr>
+                            <td>Campaign:</td>
+                            <td><a href="{{ post._project_url}}">{{ post._campaign_name }}</a></td>
+                        </tr>
+                        <tr>
+                            <td>Campaign Goal:</td>
+                            <td>{{ post._project_goal }} {{ post._project_currency }}</td>
+                        </tr>
+                        <tr>
+                            <td>Campaign Category:</td>
+                            <td>{{ post._sub_category }}</td>
+                        </tr>
+                        <tr>
+                            <td>Pledge Amount:</td>
+                            <td>{{ post._project_pledgeAmount }} {{ post._project_currency }}</td>
+                        </tr>
+                         <tr>
+                            <td>Amount of Backers:</td>
+                            <td>{{ post._project_backerCount }} backers</td>
+                        </tr>
+                        <tr>
+                            <td>Succeeded:</td>
+                            <td>{{ post._succeeded }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+    </div>
+</body>
+</html>
