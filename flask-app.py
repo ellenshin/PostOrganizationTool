@@ -7,8 +7,6 @@ from flask import Flask, render_template, send_from_directory
 
 app = Flask(__name__)
 
-post_list = []
-searched_list = []
 
 # DEMO STUFF
 
@@ -194,14 +192,13 @@ def get_data():
 
     return listofObj
 
+post_list = get_data()
+searched_list = post_list[0:10]
+
 @app.route('/')
 def view_hello():
-    global post_list
     global searched_list
-    list = []
-    post_list = get_data()
-    list = post_list[0:10]
-    searched_list = list
+    list = searched_list
     return render_template('base.html', result_list=list)
 
 @app.route('/<id>')
@@ -218,11 +215,5 @@ def view_css(file):
     return send_from_directory('css', file)
 
 if __name__ == '__main__':
-    global post_list
-    post_list = get_data()
-    list = []
-    post_list = get_data()
-    list = post_list[0:10]
-    searched_list = list
     chdir(dirname(realpath(__file__)))
     app.run(debug=True)
