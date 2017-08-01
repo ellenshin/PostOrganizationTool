@@ -218,5 +218,11 @@ def view_css(file):
     return send_from_directory('css', file)
 
 if __name__ == '__main__':
+    global post_list
+    post_list = get_data()
+    list = []
+    post_list = get_data()
+    list = post_list[0:10]
+    searched_list = list
     chdir(dirname(realpath(__file__)))
     app.run(debug=True)
