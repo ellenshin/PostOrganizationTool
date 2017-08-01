@@ -195,11 +195,6 @@ def get_data():
 
     return listofObj
 
-@app.route('/')
-def view_root():
-    ans_list_by_cat = []
-    return render_template('base.html', result_list=ans_list_by_cat)
-
 @app.route('/directory/')
 def view_directory():
     return 'FIXME'
