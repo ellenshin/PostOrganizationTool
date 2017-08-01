@@ -8,7 +8,7 @@ from flask import Flask, render_template, send_from_directory
 app = Flask(__name__)
 
 post_list = []
-
+searched_list = []
 
 # DEMO STUFF
 
@@ -197,15 +197,19 @@ def get_data():
 @app.route('/')
 def view_hello():
     global post_list
+    global searched_list
     post_list = get_data()
     list = post_list[0:10]
+    searched_list = list
     return render_template('base.html', result_list=list)
 
 @app.route('/<id>')
 def view_post(id):
-    for post in post_list:
+    for post in searched_list:
         if post._post_id == id:
             return render_template('post.html', post=post)
+        else:
+            return render_template('base.html', result_list=list)
 
 # DON'T TOUCH THE CODE BELOW THIS LINE
 
