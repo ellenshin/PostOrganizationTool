@@ -93,10 +93,11 @@ def get_data():
     listofcid = []
     prev_obj = None
 
-    with open('Large_Data_Posts_NoRetweets.csv', errors='ignore') as csvfile:
+    with open('Large_Data_Posts_NoRetweets2.csv', errors='ignore') as csvfile:
         reader = csv.reader(csvfile)
         contents = [row for row in reader]
 
+    print(len(contents[0]))
     for row in contents[1:]:
         temp = []
         cells = row
