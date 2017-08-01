@@ -100,7 +100,7 @@ def get_data():
     for row in contents[1:]:
         temp = []
         cells = row
-        post_id = cells[2]
+        post_id = cells[1]
         handle = cells[2]
         postDate = cells[3]
         postType = cells[4]
