@@ -11,8 +11,18 @@
 </head>
 <body>
     <div class ="container">
-        <h2>Post Details</h2>
-        <hr class="style3">
+        <div class = "row">
+            <div class="col-lg-6" style="text-align: left">
+                <h1>Post Details</h1>
+            </div>
+            <br>
+            <div class="col-lg-6" style="text-align: right">
+                <a href="#" class="btn"><span class="fa fa-arrow-left fa-3x"></span></a>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <a href="#" class="btn"><span class="fa fa-arrow-right fa-3x"></span></a>
+            </div>
+        </div>
+        <hr>
         <div class = "row">
                 <div class="col-lg-5">
                     <img class="img-center center-block" src="http://www.worldkidneyday.org/wp-content/uploads/2014/09/placeholder_original-140x140.png" width="300">
@@ -54,7 +64,7 @@
                         </tr>
                         <tr>
                             <td>Post URL:</td>
-                            <td><a href="{{ post._postUrl }}">{{ post._postUrl }}</a></td>
+                            <td><a href="{{ post._postUrl }}">link.</a></td>
                         </tr>
                         <tr>
                             <td>Campaign:</td>
