@@ -93,7 +93,7 @@ def get_data():
     listofcid = []
     prev_obj = None
 
-    with open('Large_Data_Set_Posts11.csv', errors='ignore') as csvfile:
+    with open('Large_Data_Set_Posts12.csv', errors='ignore') as csvfile:
         reader = csv.reader(csvfile)
         contents = [row for row in reader]
 
