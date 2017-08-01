@@ -107,7 +107,7 @@
                 </tr>
                         {% for post in result_list %}
                         <tr>
-                            <td><a href="/{{ post._post_id }}"> {{ post._post_id }}</a></td>
+                            <td><a href="/{{ post._post_id }}">{{ post._post_id }}</a></td>
                             <td>
                                 <img src="http://www.worldkidneyday.org/wp-content/uploads/2014/09/placeholder_original-140x140.png" width="140">
                             </td>
@@ -118,7 +118,7 @@
                             <td>{{ post._shares }}</td>
                             <td>{{ post._comments }}</td>
                             <td>{{ post._succeeded }}</td>
-                            <td><a class="btn btn-sm btn-default" href="{{ post._postURL }}">link</a>
+                            <td><a class="btn btn-sm btn-default" href="{{ post._postUrl }}">link</a>
                             </td>
                         </tr>
                         {% endfor %}
