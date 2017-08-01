@@ -198,6 +198,7 @@ def get_data():
 def view_hello():
     global post_list
     global searched_list
+    list = []
     post_list = get_data()
     list = post_list[0:10]
     searched_list = list
@@ -208,6 +209,7 @@ def view_post(id):
     for post in searched_list:
         if post._post_id == id:
             return render_template('post.html', post=post)
+    return "OK"
 
 # DON'T TOUCH THE CODE BELOW THIS LINE
 
