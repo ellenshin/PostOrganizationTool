@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="43661b93-8e6c-4d63-9062-56bf7bab1ff2" name="Default" comment="Added javascript">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flask-app.py" afterPath="$PROJECT_DIR$/flask-app.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/post.js" afterPath="$PROJECT_DIR$/js/post.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/post.html" afterPath="$PROJECT_DIR$/templates/post.html" />
     </list>
     <ignored path="PostOrganizationTool.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -51,8 +49,8 @@
       <file leaf-file-name="post.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/post.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.03846154">
-              <caret line="2" column="23" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.8076923">
+              <caret line="26" column="5" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -544,7 +542,13 @@
       <option name="project" value="LOCAL" />
       <updated>1501717871852</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Added javascript">
+      <created>1501719004494</created>
+      <option name="number" value="00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1501719004494</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -893,8 +897,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/post.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.03846154">
-          <caret line="2" column="23" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
+        <state vertical-scroll-proportion="0.8076923">
+          <caret line="26" column="5" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
           <folding />
         </state>
       </provider>
