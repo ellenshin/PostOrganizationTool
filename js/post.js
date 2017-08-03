@@ -15,13 +15,13 @@ if (comments.textContent == " NA") {
     comments.style.color = "white"
 }
 
-var before_id_btn = document.getElementById("before_id")
-var after_id_btn = document.getElementById("after_id")
+var before_id_btn = document.getElementById("before_btn")
+var after_id_btn = document.getElementById("after_btn")
 
-if before_id_btn.getAttribute("href") == "//0" {
+if (before_id_btn.getAttribute("href") == "/0") {
     before_id_btn.style.visibility = "hidden"
 }
 
-if after_id_btn.getAttribute("href") == "//0" {
+if (after_id_btn.getAttribute("href") == "/0") {
     after_id_btn.style.visibility = "hidden"
 }
