@@ -14,3 +14,14 @@ if (shares.textContent == " NA") {
 if (comments.textContent == " NA") {
     comments.style.color = "white"
 }
+
+var before_id_btn = document.getElementById("before_id")
+var after_id_btn = document.getElementById("after_id")
+
+if before_id_btn.getAttribute("href") == "//0" {
+    before_id_btn.visibility = "hidden"
+}
+
+if after_id_btn.getAttribute("href") == "//0" {
+    after_id_btn.visibility = "hidden"
+}

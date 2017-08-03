@@ -203,9 +203,19 @@ def view_hello():
 
 @app.route('/<id>')
 def view_post(id):
-    for post in searched_list:
-        if post._post_id == id:
-            return render_template('post.html', post=post)
+    for index in range(len(searched_list)):
+        if searched_list[index]._post_id == id:
+            current_post = searched_list[index]
+            if index == 0:
+                before_post_id = 0
+            else:
+                before_post_id = searched_list[index - 1]._post_id
+
+            if index == len(searched_list) - 1:
+                after_post_id = 0
+            else:
+                after_post_id = searched_list[index + 1]._post_id
+            return render_template('post.html', post=current_post, before_id=before_post_id, after_id=after_post_id)
     return "OK"
 
 # DON'T TOUCH THE CODE BELOW THIS LINE
