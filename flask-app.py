@@ -2,8 +2,7 @@ from os import chdir
 from os.path import dirname, realpath
 import csv
 
-
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, send_from_directory, request
 
 app = Flask(__name__)
 
@@ -21,84 +20,176 @@ def view_demo_3():
     return render_template('demo-3.html', salutation='Roll call', names=names)
 """
 
-subcategories = []
-categories = []
-#post_types = [[][][][]]     #[0] = 'image,[1] = 'text',[2] = 'video', [3] = 'fb link',[4] = 'audio'
-platforms = []
-temppost = []
 
-
-class Content():
-
+class Post:
     def __init__(self, list):
-        self._initial_dict = {'platform': list[8], 'message': list[9], 'postID': list[0]}
         self._post_id = list[0]
         self._handle = list[1]
         self._postDate = list[2]
         self._postType = list[3]
         self._gen_postType = list[4]
-        self._twitter_comment = list[5]
-        self._twitter_retweet = list[6]
-        self._postUrl = list[7]
-        self._platform = list[8]
-        self._message = list[9]
-        self._cta_prediction = list[10]
-        self._relevant_prediction = list[11]
-        self._comments = list[12]
-        self._shares = list[13]
-        self._likes = list[14]
-        self._views = list[15]
-        self._campaignID = list[16]
-        self._campaign_name = list[17]
-        self._campaign_startDate = list[18]
-        self._campaign_endDate = list[19]
-        self._project_goal = list[20]
-        self._project_currency = list[21]
-        self._project_staffPick = list[22]
-        self._sub_category = list[23]
-        self._project_url = list[24]
-        self._project_pledgeAmount = list[25]
-        self._project_backerCount = list[26]
-        self._succeeded = list[27]
-        self._prediction = list[28]
-        self._sell_relevant = list[29]
-        self._listofdict = []
-        self._listofdict.append(self._initial_dict)
+        self._postUrl = list[5]
+        self._platform = list[6]
+        self._message = list[7]
+        self._twitter_comment = list[8]
+        self._twitter_retweet = list[9]
+        self._relevant_prediction = list[10]
+        self._cta_prediction = list[11]
+        self._sell_prediction = list[12]
+        self._intent_prediction = list[13]
+        self._comments = list[14]
+        self._shares = list[15]
+        self._likes = list[16]
+        self._views = list[17]
+        self._campaignId = list[18]
+        self._campaign_name = list[19]
+        self._campaign_startDate = list[20]
+        self._campaign_endDate = list[21]
+        self._project_currency = list[22]
+        self._project_staffPick = list[23]
+        self._sub_category = list[24]
+        self._categorynames = list[25]
+        self._categorynumbers = list[26]
+        self._project_url = list[27]
+        self._project_backerCount = list[28]
+        self._project_goal = list[29]
+        self._project_pledgeAmount = list[30]
+        self._succeeded = list[31]
+        self._imageUrl = list[32]
 
-    def addPost(self, platform, message, post_id):
-        tempdict = {'platform': platform, 'message': message, 'postID': post_id}
-        self._listofdict.append(tempdict)
-        return self._listofdict
+class Campaign:
+    def __init__(self, list):
+        # self._post_id = list[0]
+        # self._handle = list[1]
+        # self._postDate = list[2]
+        # self._postType = list[3]
+        # self._gen_postType = list[4]
+        # self._postUrl = list[5]
+        # self._platform = list[6]
+        # self._message = list[7]
+        # self._twitter_comment = list[8]
+        # self._twitter_retweet = list[9]
+        # self._relevant_prediction = list[10]
+        # self._cta_prediction = list[11]
+        # self._sell_prediction = list[12]
+        # self._intent_prediction = list[13]
+        # self._comments = list[14]
+        # self._shares = list[15]
+        # self._likes = list[16]
+        # self._views = list[17]
+        self._campaignId = list[18]
+        self._campaign_name = list[19]
+        self._campaign_startDate = list[20]
+        self._campaign_endDate = list[21]
+        self._project_currency = list[22]
+        self._project_staffPick = list[23]
+        self._sub_category = list[24]
+        self._categorynames = list[25]
+        self._categorynumbers = list[26]
+        self._project_url = list[27]
+        self._project_backerCount = list[28]
+        self._project_goal = list[29]
+        self._project_pledgeAmount = list[30]
+        self._succeeded = list[31]
+        # self._imageUrl = list[32]
 
-def appenditem(obj):
+        initial_post = Post(list)
+        self._listOfPosts = []
+        self._listOfPosts.append(initial_post)
 
-    global post_types
-    if obj._get_postType == 'image':
-        post_types[0].append(obj)
+    def addPost(self,post):
+        self._listOfPosts.append(post)
+        return self._listOfPosts
 
-    elif obj._get_postType =='text':
-        post_types[1].append(obj)
+    def __repr__(self):
+        return str(self._listOfPosts)
 
-    elif obj._get_postType == 'video':
-        post_types[2].append(obj)
+# def appenditem(obj):
+#
+#     global post_types
+#     if obj._get_postType == 'image':
+#         post_types[0].append(obj)
+#
+#     elif obj._get_postType =='text':
+#         post_types[1].append(obj)
+#
+#     elif obj._get_postType == 'video':
+#         post_types[2].append(obj)
+#
+#     elif obj._get_postType == 'fb link':
+#         post_types[3].append(obj)
+#
+#     elif obj._get_postType == 'audio':
+#         post_types[4].append(obj)
 
-    elif obj._get_postType == 'fb link':
-        post_types[3].append(obj)
+def search_by_posttype(list, postType):     #filter by post
+    result = []
+    if postType == '':
+        return list
+    else:
+        for post in list:
+            if post._gen_postType == postType:
+                result.append(post)
+        return result
 
-    elif obj._get_postType == 'audio':
-        post_types[4].append(obj)
+def search_by_platform(list, platform):     #filter by post
+    result = []
+    if platform == '':
+        return list
+    else:
+        for post in list:
+            if post._platform == platform:
+                result.append(post)
+        return result
 
+def search_by_success(list,success):        #filter by campaign
+    result = []
+    print(success)
+    if success == '':
+        return list
+    else:
+        for campaign in list:
+            if campaign._succeeded == success:
+                result.append(campaign)
+        return result
+
+def search_by_intent(list,intent):      #filter by post
+    result = []
+    if intent == '':
+        return list
+    else:
+        for post in list:
+            if post._intent_prediction == intent:
+                result.append(post)
+        return result
+
+def search_by_category(list,category):      #filter by campaign
+    result = []
+    if category == '':
+        for campaign in list:
+            result.extend(campaign._listOfPosts)
+        return result
+    else:
+        for campaign in list:
+            if campaign._categorynumbers == category:
+                result.extend(campaign._listOfPosts)
+        return result
+
+full_list = []
 
 def get_data():
-    listofObj = []
+    listOfCampaigns = []
     listofcid = []
     prev_obj = None
 
-    with open('Smaller_Data_Set_Posts14.csv', errors='ignore') as csvfile:
+    global full_list
+
+    with open('data_with_imgurl2.csv', errors='ignore') as csvfile:
         reader = csv.reader(csvfile)
         contents = [row for row in reader]
 
-    print(len(contents[0]))
+    tables = contents[0]
+
     for row in contents[1:]:
         temp = []
         cells = row
@@ -107,44 +198,49 @@ def get_data():
         postDate = cells[3]
         postType = cells[4]
         gen_postType = cells[5]
-        twitter_comment = cells[6]
-        twitter_retweet = cells[7]
-        postUrl = cells[8]
-        platform = cells[9]
-        message = cells[10]
-        cta_prediction = cells[11]
-        relevant_prediction = cells[12]
-        comments = cells[13]
-        shares = cells[14]
-        likes = cells[15]
-        views = cells[16]
-        campaignId = cells[17]
-        campaign_name = cells[18]
-        campaign_startDate = cells[19]
-        campaign_endDate = cells[20]
-        project_goal = cells[21]
-        project_currency = cells[22]
-        project_staffPick = cells[23]
-        sub_category = cells[24]
-        project_url = cells[25]
-        project_pledgeAmount = cells[26]
-        project_backerCount = cells[27]
-        succeeded = cells[28]
-        prediction = cells[29]
-        sell_relevant = cells[30]
+        postUrl = cells[6]
+        platform = cells[7]
+        message = cells[8]
+        twitter_comment = cells[9]
+        twitter_retweet = cells[10]
+        relevant_prediction = cells[11]
+        cta_prediction = cells[12]
+        sell_prediction = cells[13]
+        intent_prediction = cells[14]
+        comments = cells[15]
+        shares = cells[16]
+        likes = cells[17]
+        views = cells[18]
+        campaignId = cells[19]
+        campaign_name = cells[20]
+        campaign_startDate = cells[21]
+        campaign_endDate = cells[22]
+        project_currency = cells[23]
+        project_staffPick = cells[24]
+        sub_category = cells[25]
+        categorynames = cells[26]
+        categorynumbers = cells[27]
+        project_url = cells[28]
+        project_backerCount = cells[29]
+        project_goal = cells[30]
+        project_pledgeAmount = cells[31]
+        succeeded = cells[32]
+        imageUrl = cells[33]
 
         temp.append(post_id)
         temp.append(handle)
         temp.append(postDate)
         temp.append(postType)
         temp.append(gen_postType)
-        temp.append(twitter_comment)
-        temp.append(twitter_retweet)
         temp.append(postUrl)
         temp.append(platform)
         temp.append(message)
-        temp.append(cta_prediction)
+        temp.append(twitter_comment)
+        temp.append(twitter_retweet)
         temp.append(relevant_prediction)
+        temp.append(cta_prediction)
+        temp.append(sell_prediction)
+        temp.append(intent_prediction)
         temp.append(comments)
         temp.append(shares)
         temp.append(likes)
@@ -153,53 +249,55 @@ def get_data():
         temp.append(campaign_name)
         temp.append(campaign_startDate)
         temp.append(campaign_endDate)
-        temp.append(project_goal)
         temp.append(project_currency)
         temp.append(project_staffPick)
         temp.append(sub_category)
+        temp.append(categorynames)
+        temp.append(categorynumbers)
         temp.append(project_url)
-        temp.append(project_pledgeAmount)
         temp.append(project_backerCount)
+        temp.append(project_goal)
+        temp.append(project_pledgeAmount)
         temp.append(succeeded)
-        temp.append(prediction)
-        temp.append(sell_relevant)
+        temp.append(imageUrl)
 
-        global temppost
-
-        if gen_postType not in temppost:
-            temppost.append(gen_postType)
-
-        global subcatagories
-
-        if sub_category not in subcategories:
-            subcategories.append(sub_category)
+        temp_post = Post(temp)
 
         if prev_obj == None:
-            obj = Content(temp)
+            obj = Campaign(temp)
             prev_obj = obj
             listofcid.append(campaignId)
-            listofObj.append(obj)
-        elif prev_obj._campaignID == campaignId:
-            prev_obj.addPost(platform, message, post_id)
+            listOfCampaigns.append(obj)
+        elif prev_obj._campaignId == campaignId:
+            prev_obj.addPost(temp_post)
         else:
-            obj = Content(temp)
+            obj = Campaign(temp)
             listofcid.append(campaignId)
             prev_obj = obj
-            listofObj.append(prev_obj)
-    print(temppost)
-    listofObj.append(prev_obj)
-    print(len(listofObj))
+            listOfCampaigns.append(prev_obj) # fix how it counts the first campaign twice
 
-    return listofObj
+    listOfCampaigns.append(prev_obj)
+    return listOfCampaigns
 
-post_list = get_data()
-searched_list = post_list[0:10]
+campaign_list = get_data()
+searched_list = []
+
+# @app.route('/')
+# def view_hello():
+#     global searched_list
+#     list = searched_list
+#     return render_template('base.html', result_list=list)
 
 @app.route('/')
-def view_hello():
+def view_root():
     global searched_list
-    list = searched_list
-    return render_template('base.html', result_list=list)
+    success_results = search_by_success(campaign_list, request.args.get('succeeded'))
+    category_list = search_by_category(success_results,request.args.get('category'))
+    postType_results = search_by_posttype(category_list,request.args.get('postType'))
+    platform_results = search_by_platform(postType_results, request.args.get('platform'))
+    intent_list = search_by_intent(platform_results,request.args.get('intent'))
+    searched_list = intent_list
+    return render_template('base.html', result_list = searched_list)
 
 @app.route('/<id>')
 def view_post(id):
@@ -229,5 +327,5 @@ def get_js(file):
     return send_from_directory('js', file)
 
 if __name__ == '__main__':
-    chdir(dirname(realpath(__file__)))
     app.run(debug=True)
+
