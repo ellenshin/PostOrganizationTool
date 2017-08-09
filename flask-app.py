@@ -2,23 +2,45 @@ from os import chdir
 from os.path import dirname, realpath
 import csv
 
-from flask import Flask, render_template, send_from_directory, request
+from flask import Flask, render_template, send_from_directory, request, redirect
+from math import ceil
 
 app = Flask(__name__)
 
-
+PER_PAGE = 10
 # DEMO STUFF
 
-"""
-@app.route('/demo-2/<name>/')
-def view_demo_2(name):
-    return render_template('demo-1.html', name=name)
+class Pagination(object):
 
-@app.route('/demo-3/')
-def view_demo_3():
-    names = ['Alice', 'Bob', 'Charlie']
-    return render_template('demo-3.html', salutation='Roll call', names=names)
-"""
+    def __init__(self, page, per_page, total_count):
+        self.page = page
+        self.per_page = per_page
+        self.total_count = total_count
+
+    @property
+    def pages(self):
+        return int(ceil(self.total_count / float(self.per_page)))
+
+    @property
+    def has_prev(self):
+        return self.page > 1
+
+    @property
+    def has_next(self):
+        return self.page < self.pages
+
+    def iter_pages(self, left_edge=2, left_current=2,
+                   right_current=5, right_edge=2):
+        last = 0
+        for num in range(1, self.pages + 1):
+            if num <= left_edge or \
+               (num > self.page - left_current - 1 and \
+                num < self.page + right_current) or \
+               num > self.pages - right_edge:
+                if last + 1 != num:
+                    yield None
+                yield num
+                last = num
 
 
 class Post:
@@ -125,7 +147,6 @@ def search_by_platform(list, platform):     #filter by post
 
 def search_by_success(list,success):        #filter by campaign
     result = []
-    print(success)
     if success == '':
         return list
     else:
@@ -261,8 +282,7 @@ def get_data():
     return listOfCampaigns
 
 campaign_list = get_data()
-searched_list = []
-SEARCHED = False
+searched_list = campaign_list[0:10]
 
 # @app.route('/')
 # def view_hello():
@@ -270,21 +290,26 @@ SEARCHED = False
 #     list = searched_list
 #     return render_template('base.html', result_list=list)
 
-@app.route('/')
-def view_root():
+@app.route('/', defaults={'page': 1})
+@app.route('/page/<int:page>')
+def view_root(page):
     global searched_list
     myList = [request.args.get('succeeded'), request.args.get('category'), request.args.get('postType'),
               request.args.get('platform'), request.args.get('intent')]
-    if all(myList[0] == x for x in myList):
-        return render_template('base.html', result_list=searched_list)
-    else:
-        success_results = search_by_success(campaign_list, request.args.get('succeeded'))
-        category_list = search_by_category(success_results,request.args.get('category'))
-        postType_results = search_by_posttype(category_list,request.args.get('postType'))
-        platform_results = search_by_platform(postType_results, request.args.get('platform'))
-        intent_list = search_by_intent(platform_results,request.args.get('intent'))
-        searched_list = intent_list
-        return render_template('base.html', result_list = searched_list)
+
+    #if all(myList[0] == x for x in myList):
+    return render_template('base.html', result_list=searched_list)
+    # else:
+    #     success_results = search_by_success(campaign_list, request.args.get('succeeded'))
+    #     category_list = search_by_category(success_results,request.args.get('category'))
+    #     postType_results = search_by_posttype(category_list,request.args.get('postType'))
+    #     platform_results = search_by_platform(postType_results, request.args.get('platform'))
+    #     intent_list = search_by_intent(platform_results,request.args.get('intent'))
+    #     searched_list = intent_list
+    #
+    #     count = len(searched_list)
+    #
+    #     return render_template('base.html', result_list = searched_list)
 
 @app.route('/<id>')
 def view_post(id):
