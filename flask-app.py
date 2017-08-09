@@ -262,23 +262,29 @@ def get_data():
 
 campaign_list = get_data()
 searched_list = []
+SEARCHED = False
+
+# @app.route('/')
+# def view_hello():
+#     global searched_list
+#     list = searched_list
+#     return render_template('base.html', result_list=list)
 
 @app.route('/')
-def view_hello():
-    global searched_list
-    list = searched_list
-    return render_template('base.html', result_list=list)
-
-@app.route('/search/')
 def view_root():
     global searched_list
-    success_results = search_by_success(campaign_list, request.args.get('succeeded'))
-    category_list = search_by_category(success_results,request.args.get('category'))
-    postType_results = search_by_posttype(category_list,request.args.get('postType'))
-    platform_results = search_by_platform(postType_results, request.args.get('platform'))
-    intent_list = search_by_intent(platform_results,request.args.get('intent'))
-    searched_list = intent_list
-    return render_template('base.html', result_list = searched_list)
+    myList = [request.args.get('succeeded'), request.args.get('category'), request.args.get('postType'),
+              request.args.get('platform'), request.args.get('intent')]
+    if all(myList[0] == x for x in myList):
+        return render_template('base.html', result_list=searched_list)
+    else:
+        success_results = search_by_success(campaign_list, request.args.get('succeeded'))
+        category_list = search_by_category(success_results,request.args.get('category'))
+        postType_results = search_by_posttype(category_list,request.args.get('postType'))
+        platform_results = search_by_platform(postType_results, request.args.get('platform'))
+        intent_list = search_by_intent(platform_results,request.args.get('intent'))
+        searched_list = intent_list
+        return render_template('base.html', result_list = searched_list)
 
 @app.route('/<id>')
 def view_post(id):
