@@ -59,24 +59,6 @@ class Post:
 
 class Campaign:
     def __init__(self, list):
-        # self._post_id = list[0]
-        # self._handle = list[1]
-        # self._postDate = list[2]
-        # self._postType = list[3]
-        # self._gen_postType = list[4]
-        # self._postUrl = list[5]
-        # self._platform = list[6]
-        # self._message = list[7]
-        # self._twitter_comment = list[8]
-        # self._twitter_retweet = list[9]
-        # self._relevant_prediction = list[10]
-        # self._cta_prediction = list[11]
-        # self._sell_prediction = list[12]
-        # self._intent_prediction = list[13]
-        # self._comments = list[14]
-        # self._shares = list[15]
-        # self._likes = list[16]
-        # self._views = list[17]
         self._campaignId = list[18]
         self._campaign_name = list[19]
         self._campaign_startDate = list[20]
@@ -91,7 +73,6 @@ class Campaign:
         self._project_goal = list[29]
         self._project_pledgeAmount = list[30]
         self._succeeded = list[31]
-        # self._imageUrl = list[32]
 
         initial_post = Post(list)
         self._listOfPosts = []
@@ -282,13 +263,13 @@ def get_data():
 campaign_list = get_data()
 searched_list = []
 
-# @app.route('/')
-# def view_hello():
-#     global searched_list
-#     list = searched_list
-#     return render_template('base.html', result_list=list)
-
 @app.route('/')
+def view_hello():
+    global searched_list
+    list = searched_list
+    return render_template('base.html', result_list=list)
+
+@app.route('/search/')
 def view_root():
     global searched_list
     success_results = search_by_success(campaign_list, request.args.get('succeeded'))
