@@ -327,5 +327,6 @@ def get_js(file):
     return send_from_directory('js', file)
 
 if __name__ == '__main__':
+    chdir(dirname(realpath(__file__)))
     app.run(debug=True)
 
