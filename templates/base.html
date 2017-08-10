@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>StoryBlaster's Post Organization Tool</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <link rel="stylesheet" href="/css/bootstrap.css">
-    <script src="/js/main.js"></script>
+    <!--<script src="/js/main.js"></script>-->
 </head>
 <body>
 <div class="container">
@@ -79,10 +78,9 @@
             <button type="search" class="btn btn-default">Search</button>
         </form>
 
-        <br>
-
         <div id="CourseChart">
             <table class="table">
+                <thead>
                 <tr>
                     <th>
                         Post ID
@@ -115,6 +113,8 @@
                         URL
                     </th>
                 </tr>
+                </thead>
+                <tbody>
                 {% for post in result_list %}
                 <tr>
                     <td><a href="/{{ post._post_id }}">{{ post._post_id }}</a></td>
@@ -132,35 +132,42 @@
                     </td>
                 </tr>
                 {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>
     <br>
-    <div class="text-center">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+    <p style="text-align: center" class="pagination-here"></p>
     <br>
     <hr>
     <br>
 </div>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.bootpag.min.js"></script>
+<script>
+    $('.pagination-here').bootpag({
+       total: 15,
+       page: 1,
+       maxVisible: 10,
+       href: "#page/{{number}}",
+       leaps: false,
+    }).on('page', function(event, num){
+        var items = $("table tbody tr");
+
+        var numItems = items.length;
+        var perPage = 10;
+
+    // Only show the first 2 (or first `per_page`) items initially.
+    items.slice(perPage).hide();
+        var showFrom = 10 * (num - 1);
+        var showTo = showFrom + 10;
+
+            // We'll first hide everything...
+        items.hide().slice(showFrom, showTo).show();
+        items[0].show()
+    });
+
+</script>
 <script src="/js/main.js"></script>
 </body>
 </html>

@@ -282,8 +282,9 @@ def get_data():
     return listOfCampaigns
 
 campaign_list = get_data()
-searched_list = campaign_list[0:10]
-
+# test_campaign = campaign_list[0]
+# searched_list = test_campaign._listOfPosts[0:10]
+searched_list = []
 # @app.route('/')
 # def view_hello():
 #     global searched_list
@@ -297,19 +298,21 @@ def view_root(page):
     myList = [request.args.get('succeeded'), request.args.get('category'), request.args.get('postType'),
               request.args.get('platform'), request.args.get('intent')]
 
-    #if all(myList[0] == x for x in myList):
-    return render_template('base.html', result_list=searched_list)
-    # else:
-    #     success_results = search_by_success(campaign_list, request.args.get('succeeded'))
-    #     category_list = search_by_category(success_results,request.args.get('category'))
-    #     postType_results = search_by_posttype(category_list,request.args.get('postType'))
-    #     platform_results = search_by_platform(postType_results, request.args.get('platform'))
-    #     intent_list = search_by_intent(platform_results,request.args.get('intent'))
-    #     searched_list = intent_list
-    #
-    #     count = len(searched_list)
-    #
-    #     return render_template('base.html', result_list = searched_list)
+    if all(myList[0] == x for x in myList):
+        test_campaign = campaign_list[0]
+        searched_list = test_campaign._listOfPosts[0:35]
+        return render_template('base.html', result_list=searched_list)
+    else:
+        success_results = search_by_success(campaign_list, request.args.get('succeeded'))
+        category_list = search_by_category(success_results,request.args.get('category'))
+        postType_results = search_by_posttype(category_list,request.args.get('postType'))
+        platform_results = search_by_platform(postType_results, request.args.get('platform'))
+        intent_list = search_by_intent(platform_results,request.args.get('intent'))
+        searched_list = intent_list
+
+        count = len(searched_list)
+
+        return render_template('base.html', result_list = searched_list)
 
 @app.route('/<id>')
 def view_post(id):
