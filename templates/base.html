@@ -115,7 +115,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for post in result_list %}
+                {% for post in result_list[0:10] %}
                 <tr>
                     <td><a href="/{{ post._post_id }}">{{ post._post_id }}</a></td>
                     <td>
@@ -145,6 +145,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="/js/jquery.bootpag.min.js"></script>
 <script>
+
     $('.pagination-here').bootpag({
        total: 15,
        page: 1,
@@ -152,19 +153,7 @@
        href: "#page/{{number}}",
        leaps: false,
     }).on('page', function(event, num){
-        var items = $("table tbody tr");
 
-        var numItems = items.length;
-        var perPage = 10;
-
-    // Only show the first 2 (or first `per_page`) items initially.
-    items.slice(perPage).hide();
-        var showFrom = 10 * (num - 1);
-        var showTo = showFrom + 10;
-
-            // We'll first hide everything...
-        items.hide().slice(showFrom, showTo).show();
-        items[0].show()
     });
 
 </script>
