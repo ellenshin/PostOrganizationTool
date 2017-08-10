@@ -290,29 +290,40 @@ searched_list = []
 #     global searched_list
 #     list = searched_list
 #     return render_template('base.html', result_list=list)
-
+total_pages = 0
+searched = False
 @app.route('/', defaults={'page': 1})
 @app.route('/page/<int:page>')
 def view_root(page):
     global searched_list
+    global searched
+    global total_pages
     myList = [request.args.get('succeeded'), request.args.get('category'), request.args.get('postType'),
               request.args.get('platform'), request.args.get('intent')]
-
-    if all(myList[0] == x for x in myList):
+    startFrom = (page - 1)*PER_PAGE
+    endOn = page*PER_PAGE
+    print(startFrom)
+    print(endOn)
+    if all(myList[0] == x for x in myList) and searched == False:
         test_campaign = campaign_list[0]
         searched_list = test_campaign._listOfPosts[0:35]
-        return render_template('base.html', result_list=searched_list)
-    else:
+        list = searched_list[startFrom:endOn]
+        return render_template('base.html', result_list=list, startFrom=startFrom, endOn=endOn, page_num=page, total_pages=total_pages)
+    elif searched == False:
+        searched = True
         success_results = search_by_success(campaign_list, request.args.get('succeeded'))
         category_list = search_by_category(success_results,request.args.get('category'))
         postType_results = search_by_posttype(category_list,request.args.get('postType'))
         platform_results = search_by_platform(postType_results, request.args.get('platform'))
         intent_list = search_by_intent(platform_results,request.args.get('intent'))
         searched_list = intent_list
+        total_pages = int(ceil(len(searched_list) / float(PER_PAGE)))
+        list = searched_list[startFrom:endOn]
+        return render_template('base.html', result_list = list, startFrom=startFrom, endOn=endOn, page_num=page, total_pages=total_pages)
+    else:
+        list = searched_list[startFrom:endOn]
+        return render_template('base.html', result_list = list, startFrom=startFrom, endOn=endOn, page_num=page, total_pages=total_pages)
 
-        count = len(searched_list)
-
-        return render_template('base.html', result_list = searched_list)
 
 @app.route('/<id>')
 def view_post(id):

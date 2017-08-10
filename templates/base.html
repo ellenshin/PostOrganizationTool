@@ -63,7 +63,7 @@
                     <option value="4">Dance</option>
                     <option value="5">Design</option>
                     <option value="6">Fashion</option>
-                    <option value="7">Film $ Video</option>
+                    <option value="7">Film & Video</option>
                     <option value="8">Food</option>
                     <option value="9">Games</option>
                     <option value="10">Journalism</option>
@@ -115,7 +115,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for post in result_list[0:10] %}
+                {% for post in result_list %}
                 <tr>
                     <td><a href="/{{ post._post_id }}">{{ post._post_id }}</a></td>
                     <td>
@@ -147,13 +147,13 @@
 <script>
 
     $('.pagination-here').bootpag({
-       total: 15,
-       page: 1,
+       total: {{ total_pages }},
+       page: {{page_num}},
        maxVisible: 10,
-       href: "#page/{{number}}",
+       href: "#/page/{{number}}",
        leaps: false,
     }).on('page', function(event, num){
-
+        window.location = "/page/" + num
     });
 
 </script>
