@@ -11,7 +11,7 @@
     <div class="row">
         <h1>StoryBlaster's Post Organization Tool</h1>
         <hr>
-        <form action method="get" class="form-inline" style="text-align: left">
+        <form id="search_form" action="/page/1" class="form-inline" style="text-align: left">
             <div class="form-group">
                 <label for="postType">Post Type </label>
                 <select id="postType" name="postType" class="form-control">
@@ -75,9 +75,18 @@
                 </select>
             </div>
 
-            <button type="search" class="btn btn-default">Search</button>
-        </form>
+            <button onclick="searchDisappear()" type="search" class="btn btn-default">Search</button>
+            <script>
+                function searchDisappear() {
+                    document.getElementById("search_form").style.visibility = "hidden";
+                }
 
+
+            </script>
+        </form>
+        <form style="text-align: right" action="/">
+            <input class="btn btn-default" type="submit" value="Clear Search"/>
+        </form>
         <div id="CourseChart">
             <table class="table">
                 <thead>
@@ -155,6 +164,10 @@
     }).on('page', function(event, num){
         window.location = "/page/" + num
     });
+
+
+
+
 
 </script>
 <script src="/js/main.js"></script>

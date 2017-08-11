@@ -8,10 +8,11 @@ from math import ceil
 app = Flask(__name__)
 
 PER_PAGE = 10
+
+
 # DEMO STUFF
 
 class Pagination(object):
-
     def __init__(self, page, per_page, total_count):
         self.page = page
         self.per_page = per_page
@@ -34,9 +35,9 @@ class Pagination(object):
         last = 0
         for num in range(1, self.pages + 1):
             if num <= left_edge or \
-               (num > self.page - left_current - 1 and \
-                num < self.page + right_current) or \
-               num > self.pages - right_edge:
+                    (num > self.page - left_current - 1 and \
+                                 num < self.page + right_current) or \
+                            num > self.pages - right_edge:
                 if last + 1 != num:
                     yield None
                 yield num
@@ -79,6 +80,7 @@ class Post:
         self._succeeded = list[31]
         self._imageUrl = list[32]
 
+
 class Campaign:
     def __init__(self, list):
         self._campaignId = list[18]
@@ -100,12 +102,13 @@ class Campaign:
         self._listOfPosts = []
         self._listOfPosts.append(initial_post)
 
-    def addPost(self,post):
+    def addPost(self, post):
         self._listOfPosts.append(post)
         return self._listOfPosts
 
     def __repr__(self):
         return str(self._listOfPosts)
+
 
 # def appenditem(obj):
 #
@@ -125,7 +128,7 @@ class Campaign:
 #     elif obj._get_postType == 'audio':
 #         post_types[4].append(obj)
 
-def search_by_posttype(list, postType):     #filter by post
+def search_by_posttype(list, postType):  # filter by post
     result = []
     if postType == '':
         return list
@@ -135,7 +138,8 @@ def search_by_posttype(list, postType):     #filter by post
                 result.append(post)
         return result
 
-def search_by_platform(list, platform):     #filter by post
+
+def search_by_platform(list, platform):  # filter by post
     result = []
     if platform == '':
         return list
@@ -145,7 +149,8 @@ def search_by_platform(list, platform):     #filter by post
                 result.append(post)
         return result
 
-def search_by_success(list,success):        #filter by campaign
+
+def search_by_success(list, success):  # filter by campaign
     result = []
     if success == '':
         return list
@@ -155,7 +160,8 @@ def search_by_success(list,success):        #filter by campaign
                 result.append(campaign)
         return result
 
-def search_by_intent(list,intent):      #filter by post
+
+def search_by_intent(list, intent):  # filter by post
     result = []
     if intent == '':
         return list
@@ -165,7 +171,8 @@ def search_by_intent(list,intent):      #filter by post
                 result.append(post)
         return result
 
-def search_by_category(list,category):      #filter by campaign
+
+def search_by_category(list, category):  # filter by campaign
     result = []
     if category == '':
         for campaign in list:
@@ -177,7 +184,9 @@ def search_by_category(list,category):      #filter by campaign
                 result.extend(campaign._listOfPosts)
         return result
 
+
 full_list = []
+
 
 def get_data():
     listOfCampaigns = []
@@ -276,10 +285,11 @@ def get_data():
             obj = Campaign(temp)
             listofcid.append(campaignId)
             prev_obj = obj
-            listOfCampaigns.append(prev_obj) # fix how it counts the first campaign twice
+            listOfCampaigns.append(prev_obj)  # fix how it counts the first campaign twice
 
     listOfCampaigns.append(prev_obj)
     return listOfCampaigns
+
 
 campaign_list = get_data()
 # test_campaign = campaign_list[0]
@@ -292,37 +302,61 @@ searched_list = []
 #     return render_template('base.html', result_list=list)
 total_pages = 0
 searched = False
-@app.route('/', defaults={'page': 1})
+
+
+@app.route('/')
+def view_root():
+    global searched_list
+    global searched
+    global total_pages
+    page = 1
+    startFrom = (page - 1) * PER_PAGE
+    endOn = page * PER_PAGE
+
+    searched = False
+    searched_list = []
+    total_pages = 1
+
+    startFrom = 0
+    endOn = 10
+    list = []
+    return render_template('base.html', result_list=list, startFrom=startFrom, endOn=endOn, page_num=1,
+                           total_pages=total_pages)
+
+
 @app.route('/page/<int:page>')
-def view_root(page):
+def view_page(page):
     global searched_list
     global searched
     global total_pages
     myList = [request.args.get('succeeded'), request.args.get('category'), request.args.get('postType'),
               request.args.get('platform'), request.args.get('intent')]
-    startFrom = (page - 1)*PER_PAGE
-    endOn = page*PER_PAGE
+    startFrom = (page - 1) * PER_PAGE
+    endOn = page * PER_PAGE
     print(startFrom)
     print(endOn)
     if all(myList[0] == x for x in myList) and searched == False:
         test_campaign = campaign_list[0]
         searched_list = test_campaign._listOfPosts[0:35]
         list = searched_list[startFrom:endOn]
-        return render_template('base.html', result_list=list, startFrom=startFrom, endOn=endOn, page_num=page, total_pages=total_pages)
+        return render_template('base.html', result_list=list, startFrom=startFrom, endOn=endOn, page_num=page,
+                               total_pages=total_pages)
     elif searched == False:
         searched = True
         success_results = search_by_success(campaign_list, request.args.get('succeeded'))
-        category_list = search_by_category(success_results,request.args.get('category'))
-        postType_results = search_by_posttype(category_list,request.args.get('postType'))
+        category_list = search_by_category(success_results, request.args.get('category'))
+        postType_results = search_by_posttype(category_list, request.args.get('postType'))
         platform_results = search_by_platform(postType_results, request.args.get('platform'))
-        intent_list = search_by_intent(platform_results,request.args.get('intent'))
+        intent_list = search_by_intent(platform_results, request.args.get('intent'))
         searched_list = intent_list
         total_pages = int(ceil(len(searched_list) / float(PER_PAGE)))
         list = searched_list[startFrom:endOn]
-        return render_template('base.html', result_list = list, startFrom=startFrom, endOn=endOn, page_num=page, total_pages=total_pages)
+        return render_template('base.html', result_list=list, startFrom=startFrom, endOn=endOn, page_num=page,
+                               total_pages=total_pages)
     else:
         list = searched_list[startFrom:endOn]
-        return render_template('base.html', result_list = list, startFrom=startFrom, endOn=endOn, page_num=page, total_pages=total_pages)
+        return render_template('base.html', result_list=list, startFrom=startFrom, endOn=endOn, page_num=page,
+                               total_pages=total_pages)
 
 
 @app.route('/<id>')
@@ -342,17 +376,19 @@ def view_post(id):
             return render_template('post.html', post=current_post, before_id=before_post_id, after_id=after_post_id)
     return "OK"
 
+
 # DON'T TOUCH THE CODE BELOW THIS LINE
 
 @app.route('/css/<file>')
 def view_css(file):
     return send_from_directory('css', file)
 
+
 @app.route('/js/<file>')
 def get_js(file):
     return send_from_directory('js', file)
 
+
 if __name__ == '__main__':
     chdir(dirname(realpath(__file__)))
     app.run(debug=True)
-
